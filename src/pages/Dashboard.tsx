@@ -210,6 +210,67 @@ export default function Dashboard() {
           </Card>
         </div>
 
+        {/* Quick Pay Section - Most prominent */}
+        {totalOutstanding > 0 && (
+          <Card className="mb-8 border-primary bg-gradient-to-r from-primary/5 to-accent/5">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <CreditCard className="h-5 w-5 text-primary" />
+                Quick Pay Outstanding Fees
+              </CardTitle>
+              <CardDescription>
+                Select a payment method to pay your outstanding balance
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="mb-4">
+                <p className="text-3xl font-bold text-primary">{formatCurrency(totalOutstanding)}</p>
+                <p className="text-sm text-muted-foreground">Total outstanding balance</p>
+              </div>
+              <div className="grid gap-3 sm:grid-cols-3">
+                <Button
+                  size="lg"
+                  className="h-auto py-4 flex-col gap-2"
+                  onClick={() => {
+                    toast.info("M-Pesa STK Push coming soon!", {
+                      description: "You'll receive a prompt on your phone to complete payment."
+                    });
+                  }}
+                >
+                  <span className="text-lg">📱</span>
+                  <span>Pay with M-Pesa</span>
+                </Button>
+                <Button
+                  size="lg"
+                  variant="secondary"
+                  className="h-auto py-4 flex-col gap-2"
+                  onClick={() => {
+                    toast.info("Card payment coming soon!", {
+                      description: "Visa and Mastercard will be accepted."
+                    });
+                  }}
+                >
+                  <span className="text-lg">💳</span>
+                  <span>Pay with Card</span>
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="h-auto py-4 flex-col gap-2"
+                  onClick={() => {
+                    toast.info("Bank transfer coming soon!", {
+                      description: "Upload your bank slip for verification."
+                    });
+                  }}
+                >
+                  <span className="text-lg">🏦</span>
+                  <span>Bank Transfer</span>
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Students */}
         {students.length > 0 && (
           <Card className="mb-8">
