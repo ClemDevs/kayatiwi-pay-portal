@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, User, CreditCard, FileText, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
+import { PaymentDialog } from "@/components/PaymentDialog";
 
 interface Student {
   id: string;
@@ -42,6 +43,7 @@ export default function Dashboard() {
   const [students, setStudents] = useState<Student[]>([]);
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [guardianId, setGuardianId] = useState<string | null>(null);
+  const [paymentDialogOpen, setPaymentDialogOpen] = useState(false);
 
   useEffect(() => {
     checkAuth();
@@ -227,49 +229,23 @@ export default function Dashboard() {
                 <p className="text-3xl font-bold text-primary">{formatCurrency(totalOutstanding)}</p>
                 <p className="text-sm text-muted-foreground">Total outstanding balance</p>
               </div>
-              <div className="grid gap-3 sm:grid-cols-3">
-                <Button
-                  size="lg"
-                  className="h-auto py-4 flex-col gap-2"
-                  onClick={() => {
-                    toast.info("M-Pesa STK Push coming soon!", {
-                      description: "You'll receive a prompt on your phone to complete payment."
-                    });
-                  }}
-                >
-                  <span className="text-lg">📱</span>
-                  <span>Pay with M-Pesa</span>
-                </Button>
-                <Button
-                  size="lg"
-                  variant="secondary"
-                  className="h-auto py-4 flex-col gap-2"
-                  onClick={() => {
-                    toast.info("Card payment coming soon!", {
-                      description: "Visa and Mastercard will be accepted."
-                    });
-                  }}
-                >
-                  <span className="text-lg">💳</span>
-                  <span>Pay with Card</span>
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="h-auto py-4 flex-col gap-2"
-                  onClick={() => {
-                    toast.info("Bank transfer coming soon!", {
-                      description: "Upload your bank slip for verification."
-                    });
-                  }}
-                >
-                  <span className="text-lg">🏦</span>
-                  <span>Bank Transfer</span>
-                </Button>
-              </div>
+              <Button
+                size="lg"
+                className="w-full h-auto py-4 text-lg"
+                onClick={() => setPaymentDialogOpen(true)}
+              >
+                <CreditCard className="mr-2 h-5 w-5" />
+                Pay Now
+              </Button>
             </CardContent>
           </Card>
         )}
+
+        <PaymentDialog
+          open={paymentDialogOpen}
+          onOpenChange={setPaymentDialogOpen}
+          amount={totalOutstanding}
+        />
 
         {/* Students */}
         {students.length > 0 && (
