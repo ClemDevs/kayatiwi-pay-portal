@@ -212,39 +212,43 @@ export default function Dashboard() {
           </Card>
         </div>
 
-        {/* Quick Pay Section - Most prominent */}
-        {totalOutstanding > 0 && (
-          <Card className="mb-8 border-primary bg-gradient-to-r from-primary/5 to-accent/5">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <CreditCard className="h-5 w-5 text-primary" />
-                Quick Pay Outstanding Fees
-              </CardTitle>
-              <CardDescription>
-                Select a payment method to pay your outstanding balance
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="mb-4">
-                <p className="text-3xl font-bold text-primary">{formatCurrency(totalOutstanding)}</p>
-                <p className="text-sm text-muted-foreground">Total outstanding balance</p>
-              </div>
-              <Button
-                size="lg"
-                className="w-full h-auto py-4 text-lg"
-                onClick={() => setPaymentDialogOpen(true)}
-              >
-                <CreditCard className="mr-2 h-5 w-5" />
-                Pay Now
-              </Button>
-            </CardContent>
-          </Card>
-        )}
+        {/* Demo Payment Section - Always visible for testing */}
+        <Card className="mb-8 border-primary bg-gradient-to-r from-primary/5 to-accent/5">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <CreditCard className="h-5 w-5 text-primary" />
+              {totalOutstanding > 0 ? "Quick Pay Outstanding Fees" : "Demo Payment"}
+            </CardTitle>
+            <CardDescription>
+              {totalOutstanding > 0 
+                ? "Select a payment method to pay your outstanding balance"
+                : "Test the payment flow with a demo amount"}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="mb-4">
+              <p className="text-3xl font-bold text-primary">
+                {totalOutstanding > 0 ? formatCurrency(totalOutstanding) : formatCurrency(25000)}
+              </p>
+              <p className="text-sm text-muted-foreground">
+                {totalOutstanding > 0 ? "Total outstanding balance" : "Demo amount for testing"}
+              </p>
+            </div>
+            <Button
+              size="lg"
+              className="w-full h-auto py-4 text-lg"
+              onClick={() => setPaymentDialogOpen(true)}
+            >
+              <CreditCard className="mr-2 h-5 w-5" />
+              Pay Now
+            </Button>
+          </CardContent>
+        </Card>
 
         <PaymentDialog
           open={paymentDialogOpen}
           onOpenChange={setPaymentDialogOpen}
-          amount={totalOutstanding}
+          amount={totalOutstanding > 0 ? totalOutstanding : 25000}
         />
 
         {/* Students */}
